@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Database interaction test</title>
+</head>
+
+<body>
+<h2 style="text-align:center">Test of interaction with database on server</h2>
+
+<div style="text-align:center;vertical-align:middle;">
+  <p>Please input the UNIKEY to find the name of the student:</p>
+  <input id = "unikey"> <br><br>
+  <button onclick="isUnikey()">Find name</button> <br>
+</div>
+
+<p id="p1" style="text-align:center"></p>
+<p id="p2" style="text-align:center"></p> <br>
+<p id="p3" style="text-align:center"></p>
+
+<!--  ============================ Script files ===================================  -->
+
+<script src="/__/firebase/7.14.2/firebase-app.js"></script> <!-- The core Firebase JS SDK -->
+<script src="/__/firebase/7.14.2/firebase-firestore.js"></script> <!-- add "Cloud Firestore"(database) SDK -->
+<script src="/__/firebase/init.js"></script> <!-- Initialize Firebase -->
+<script>
+  var db = firebase.firestore(); // or constant db? 
+</script>
+<script src="addDataTemplate.js"></script>
+<script src="addDataStudent.js"></script>
+<script src="addDataTeacher.js"></script>
+
+<script>
+var unikey; 
+function renderData(doc){
+  // output data to paragraph with ID "p2"
+  document.getElementById("p2").innerHTML = "The name of this student is: " + doc.data().name;
+}; 
+
+function isUnikey() {
+  unikey = document.getElementById("unikey").value;
+  document.getElementById("p1").innerHTML = "The UNIKEY you inputted is: " + unikey;
+
+  var docRef = db.collection("students").doc(unikey); // Retrieve data in the Firestore
+  docRef.get().then(function(doc){
+    // console.log(doc.id, ":", doc.data()); // print data to console
+    renderData(doc); // display data on webpage
+  })
+}; 
+/*
+// Update data
+db.collection("data").doc("one").update({
+  numberExample: 4.14
+}); 
+
+// Could be directly inputted into Console inside browser
+db.collection("data").doc("one").get().then(function(doc){
+  console.log("Yooo:", doc.data().arrayExample[2]);
+  console.log("Yooo:", doc.data().objectExample); 
+  console.log(doc.id, ":", doc.data());
+}); 
+
+// db.collection("data").doc("one").delete();
+db.collection("cities").doc("DC").set({
+    name: "Washington, D.C", state: null, country: "USA",
+    capital: true, population: 680000,
+    regions: ["east_coast"] });
+*/
+console.log("gogogo!!"); 
+</script>
+
+</body>
+</html>
